@@ -291,20 +291,20 @@
                 <button class="cyber-btn cyber-scientific" onclick="addFunction('sqrt')">√</button>
                 <button class="cyber-btn" onclick="addToDisplay('(')">(</button>
                 <button class="cyber-btn" onclick="addToDisplay(')')">)</button>
-                <button class="cyber-btn cyber-scientific" onclick="addOperator('**')">^</button>
-                <button class="cyber-btn cyber-operator" onclick="addOperator('-')">−</button>
+                <button class="cyber-btn cyber-operator" onclick="addOperator('**')">^</button>
+                <button class="cyber-btn cyber-operator" onclick="addOperator('+')">+</button>
                 
                 <button class="cyber-btn" onclick="addToDisplay('7')">7</button>
                 <button class="cyber-btn" onclick="addToDisplay('8')">8</button>
                 <button class="cyber-btn" onclick="addToDisplay('9')">9</button>
                 <button class="cyber-btn cyber-scientific" onclick="addFunction('square')">x²</button>
-                <button class="cyber-btn cyber-equal" onclick="calculate()">=</button>
+                <button class="cyber-btn cyber-operator" onclick="addOperator('-')">−</button>
                 
                 <button class="cyber-btn" onclick="addToDisplay('4')">4</button>
                 <button class="cyber-btn" onclick="addToDisplay('5')">5</button>
                 <button class="cyber-btn" onclick="addToDisplay('6')">6</button>
                 <button class="cyber-btn cyber-scientific" onclick="addFunction('cube')">x³</button>
-                <button class="cyber-btn cyber-scientific" onclick="addFunction('pow10')">10^x</button>
+                <button class="cyber-btn cyber-equal" onclick="calculate()">=</button>
                 
                 <button class="cyber-btn" onclick="addToDisplay('1')">1</button>
                 <button class="cyber-btn" onclick="addToDisplay('2')">2</button>
@@ -425,9 +425,6 @@
                             break;
                         case 'cube':
                             result = Math.pow(value, 3);
-                            break;
-                        case 'pow10':
-                            result = Math.pow(10, value);
                             break;
                         case 'abs':
                             result = Math.abs(value);
