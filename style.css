@@ -1,0 +1,290 @@
+/* Cyberpunk Theme */
+:root {
+    --cyber-blue: #00f2ff;
+    --cyber-pink: #ff00ff;
+    --cyber-purple: #9d00ff;
+    --cyber-green: #00ff41;
+    --cyber-dark: #0a0a20;
+    --cyber-darker: #050510;
+    --cyber-gray: #1a1a2e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cyber-darker);
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.cyber-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--cyber-darker) 0%, var(--cyber-dark) 100%);
+    z-index: -2;
+}
+
+.cyber-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+}
+
+.cyber-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(to bottom, 
+            transparent 0%, 
+            rgba(0, 242, 255, 0.1) 50%, 
+            transparent 100%);
+    background-size: 100% 8px;
+    animation: scanline 8s linear infinite;
+    z-index: -1;
+}
+
+@keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+.cyber-container {
+    width: 100%;
+    max-width: 350px;
+    padding: 20px;
+    position: relative;
+}
+
+.cyber-title {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    color: white;
+    text-shadow: 0 0 10px var(--cyber-blue), 0 0 20px var(--cyber-blue);
+    letter-spacing: 3px;
+    animation: titleGlow 2s infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { text-shadow: 0 0 10px var(--cyber-blue); }
+    100% { text-shadow: 0 0 20px var(--cyber-blue), 0 0 30px var(--cyber-purple); }
+}
+
+.cyber-calculator {
+    background-color: rgba(10, 10, 32, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.cyber-calculator:hover {
+    transform: rotateY(5deg) rotateX(-3deg) scale(1.02);
+    box-shadow: 0 0 50px rgba(0, 242, 255, 0.4);
+}
+
+.cyber-display {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.cyber-screen {
+    background-color: #001a1e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--cyber-blue);
+    position: relative;
+    overflow: hidden;
+    min-height: 100px;
+}
+
+.cyber-screen-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 242, 255, 0.1) 0%,
+        rgba(0, 242, 255, 0) 50%,
+        rgba(0, 242, 255, 0.1) 100%
+    );
+    pointer-events: none;
+}
+
+#display {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--cyber-blue);
+    font-size: 2.5rem;
+    text-align: right;
+    font-family: 'Orbitron', sans-serif;
+    outline: none;
+    text-shadow: 0 0 5px var(--cyber-blue);
+    margin-bottom: 10px;
+}
+
+#display::placeholder {
+    color: rgba(0, 242, 255, 0.3);
+}
+
+.cyber-keypad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.cyber-btn {
+    border: none;
+    width: 100%;
+    height: 60px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.cyber-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.cyber-btn:active {
+    transform: translateY(1px);
+}
+
+.cyber-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 242, 255, 0.4),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.cyber-btn:hover::before {
+    left: 100%;
+}
+
+.cyber-operator {
+    background-color: rgba(109, 238, 10, 0.1);
+    color: var(--cyber-green);
+    border: 1px solid rgba(109, 238, 10, 0.3);
+}
+
+.cyber-scientific {
+    background-color: rgba(255, 0, 255, 0.1);
+    color: var(--cyber-pink);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.cyber-equal {
+    background-color: var(--cyber-purple);
+    color: white;
+    animation: btnGlow 2s infinite alternate;
+}
+
+@keyframes btnGlow {
+    0% { 
+        box-shadow: 0 0 10px var(--cyber-purple);
+        text-shadow: 0 0 5px white;
+    }
+    100% { 
+        box-shadow: 0 0 20px var(--cyber-purple), 0 0 30px var(--cyber-pink);
+        text-shadow: 0 0 10px white;
+    }
+}
+
+.cyber-clear {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ff5555;
+}
+
+.angle-mode {
+    background-color: rgba(0, 242, 255, 0.1);
+    color: var(--cyber-blue);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+/* Particle effects for calculations */
+.cyber-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--cyber-pink);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    animation: particleFade 1s forwards;
+}
+
+@keyframes particleFade {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty));
+        opacity: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+    .cyber-container {
+        padding: 10px;
+    }
+    
+    .cyber-title {
+        font-size: 1.8rem;
+    }
+    
+    .cyber-btn {
+        height: 50px;
+        font-size: 1rem;
+    }
+    
+    #display {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srijan's Cyber Scientific Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyber-blue: #00f2ff;
+            --cyber-pink: #ff00ff;
+            --cyber-purple: #9d00ff;
+            --cyber-green: #00ff41;
+            --cyber-dark: #0a0a20;
+            --cyber-darker: #050510;
+            --cyber-gray: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--cyber-darker);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .cyber-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--cyber-darker) 0%, var(--cyber-dark) 100%);
+            z-index: -2;
+        }
+
+        .cyber-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        .cyber-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to bottom, 
+                    transparent 0%, 
+                    rgba(0, 242, 255, 0.1) 50%, 
+                    transparent 100%);
+            background-size: 100% 8px;
+            animation: scanline 8s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        .cyber-container {
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .cyber-title {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            color: white;
+            text-shadow: 0 0 10px var(--cyber-blue), 0 0 20px var(--cyber-blue);
+            letter-spacing: 3px;
+            animation: titleGlow 2s infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px var(--cyber-blue); }
+            100% { text-shadow: 0 0 20px var(--cyber-blue), 0 0 30px var(--cyber-purple); }
+        }
+
+        .cyber-calculator {
+            background-color: rgba(10, 10, 32, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+
+        .cyber-display {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .cyber-screen {
+            background-color: #001a1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--cyber-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-screen-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 242, 255, 0.1) 0%,
+                rgba(0, 242, 255, 0) 50%,
+                rgba(0, 242, 255, 0.1) 100%
+            );
+            pointer-events: none;
+        }
+
+        #display {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--cyber-blue);
+            font-size: 2.5rem;
+            text-align: right;
+            font-family: 'Orbitron', sans-serif;
+            outline: none;
+            text-shadow: 0 0 5px var(--cyber-blue);
+        }
+
+        #display::placeholder {
+            color: rgba(0, 242, 255, 0.3);
+        }
+
+        .cyber-keypad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .cyber-btn {
+            border: none;
+            padding: 15px 0;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: var(--cyber-gray);
+            color: white;
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .cyber-btn:active {
+            transform: translateY(1px);
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 242, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-operator {
+            background-color: rgba(157, 0, 255, 0.2);
+            color: var(--cyber-pink);
+            border: 1px solid var(--cyber-purple);
+        }
+
+        .cyber-scientific {
+            background-color: rgba(255, 0, 255, 0.1);
+            color: var(--cyber-pink);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+        }
+
+        .cyber-equal {
+            background-color: var(--cyber-purple);
+            color: white;
+            animation: btnGlow 2s infinite alternate;
+        }
+
+        @keyframes btnGlow {
+            0% { box-shadow: 0 0 10px var(--cyber-purple); }
+            100% { box-shadow: 0 0 20px var(--cyber-purple), 0 0 30px var(--cyber-pink); }
+        }
+
+        .cyber-clear {
+            background-color: rgba(255, 0, 0, 0.2);
+        }
+
+        .angle-mode {
+            background-color: rgba(0, 242, 255, 0.1);
+            color: var(--cyber-blue);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        @media (max-width: 400px) {
+            .cyber-container {
+                padding: 10px;
+            }
+            
+            .cyber-title {
+                font-size: 1.8rem;
+            }
+            
+            .cyber-btn {
+                padding: 12px 0;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-background">
+        <div class="cyber-grid"></div>
+        <div class="cyber-lines"></div>
+    </div>
+    
+    <div class="cyber-container">
+        <h1 class="cyber-title">SRIJAN'S <span class="cyber-glow">SCI CALC</span></h1>
+        
+        <div class="cyber-calculator">
+            <div class="cyber-display">
+                <div class="cyber-screen">
+                    <input type="text" id="display" placeholder="0">
+                    <div class="cyber-screen-glow"></div>
+                </div>
+            </div>
+            
+            <div class="cyber-keypad">
+                <button class="cyber-btn cyber-clear" onclick="clearDisplay()">AC</button>
+                <button class="cyber-btn" onclick="backspace()">DEL</button>
+                <button class="cyber-btn angle-mode" onclick="toggleAngleMode()">RAD</button>
+                <button class="cyber-btn cyber-scientific" onclick="addConstant('Math.PI')">π</button>
+                <button class="cyber-btn cyber-scientific" onclick="addConstant('Math.E')">e</button>
+                
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('sin')">sin</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('cos')">cos</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('tan')">tan</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('log')">log</button>
+                <button class="cyber-btn cyber-operator" onclick="addOperator('/')">/</button>
+                
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('asin')">sin⁻¹</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('acos')">cos⁻¹</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('atan')">tan⁻¹</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('ln')">ln</button>
+                <button class="cyber-btn cyber-operator" onclick="addOperator('*')">×</button>
+                
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('sqrt')">√</button>
+                <button class="cyber-btn" onclick="addToDisplay('(')">(</button>
+                <button class="cyber-btn" onclick="addToDisplay(')')">)</button>
+                <button class="cyber-btn cyber-scientific" onclick="addOperator('**')">^</button>
+                <button class="cyber-btn cyber-operator" onclick="addOperator('-')">−</button>
+                
+                <button class="cyber-btn" onclick="addToDisplay('7')">7</button>
+                <button class="cyber-btn" onclick="addToDisplay('8')">8</button>
+                <button class="cyber-btn" onclick="addToDisplay('9')">9</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('square')">x²</button>
+                <button class="cyber-btn cyber-equal" onclick="calculate()">=</button>
+                
+                <button class="cyber-btn" onclick="addToDisplay('4')">4</button>
+                <button class="cyber-btn" onclick="addToDisplay('5')">5</button>
+                <button class="cyber-btn" onclick="addToDisplay('6')">6</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('cube')">x³</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('pow10')">10^x</button>
+                
+                <button class="cyber-btn" onclick="addToDisplay('1')">1</button>
+                <button class="cyber-btn" onclick="addToDisplay('2')">2</button>
+                <button class="cyber-btn" onclick="addToDisplay('3')">3</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('abs')">|x|</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('exp')">e^x</button>
+                
+                <button class="cyber-btn" onclick="addToDisplay('0')">0</button>
+                <button class="cyber-btn" onclick="addToDisplay('.')">.</button>
+                <button class="cyber-btn" onclick="addPercentage()">%</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('reciprocal')">1/x</button>
+                <button class="cyber-btn cyber-scientific" onclick="addFunction('factorial')">x!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '0';
+        let degreeMode = false;
+        const display = document.getElementById('display');
+        
+        function updateDisplay() {
+            display.value = currentInput;
+        }
+        
+        function clearDisplay() {
+            currentInput = '0';
+            updateDisplay();
+        }
+        
+        function backspace() {
+            if (currentInput.length === 1) {
+                currentInput = '0';
+            } else {
+                currentInput = currentInput.slice(0, -1);
+            }
+            updateDisplay();
+        }
+        
+        function addToDisplay(value) {
+            if (currentInput === '0' && value !== '.' && !value.startsWith('Math.')) {
+                currentInput = value;
+            } else {
+                currentInput += value;
+            }
+            updateDisplay();
+        }
+        
+        function addOperator(op) {
+            if (currentInput !== '0') {
+                currentInput += op;
+                updateDisplay();
+            }
+        }
+        
+        function addConstant(constant) {
+            if (currentInput === '0') {
+                currentInput = constant;
+            } else {
+                currentInput += constant;
+            }
+            updateDisplay();
+        }
+        
+        function addPercentage() {
+            if (currentInput !== '0') {
+                try {
+                    const value = parseFloat(currentInput);
+                    currentInput = (value / 100).toString();
+                    updateDisplay();
+                } catch {
+                    currentInput = 'Error';
+                    updateDisplay();
+                    setTimeout(() => {
+                        currentInput = '0';
+                        updateDisplay();
+                    }, 1000);
+                }
+            }
+        }
+        
+        function addFunction(func) {
+            if (currentInput !== '0') {
+                try {
+                    let value = parseFloat(currentInput);
+                    let result;
+                    
+                    switch(func) {
+                        case 'sin':
+                            result = degreeMode ? Math.sin(value * Math.PI / 180) : Math.sin(value);
+                            break;
+                        case 'cos':
+                            result = degreeMode ? Math.cos(value * Math.PI / 180) : Math.cos(value);
+                            break;
+                        case 'tan':
+                            result = degreeMode ? Math.tan(value * Math.PI / 180) : Math.tan(value);
+                            break;
+                        case 'asin':
+                            result = degreeMode ? Math.asin(value) * 180 / Math.PI : Math.asin(value);
+                            break;
+                        case 'acos':
+                            result = degreeMode ? Math.acos(value) * 180 / Math.PI : Math.acos(value);
+                            break;
+                        case 'atan':
+                            result = degreeMode ? Math.atan(value) * 180 / Math.PI : Math.atan(value);
+                            break;
+                        case 'log':
+                            result = Math.log10(value);
+                            break;
+                        case 'ln':
+                            result = Math.log(value);
+                            break;
+                        case 'sqrt':
+                            result = Math.sqrt(value);
+                            break;
+                        case 'square':
+                            result = Math.pow(value, 2);
+                            break;
+                        case 'cube':
+                            result = Math.pow(value, 3);
+                            break;
+                        case 'pow10':
+                            result = Math.pow(10, value);
+                            break;
+                        case 'abs':
+                            result = Math.abs(value);
+                            break;
+                        case 'exp':
+                            result = Math.exp(value);
+                            break;
+                        case 'reciprocal':
+                            result = 1 / value;
+                            break;
+                        case 'factorial':
+                            result = 1;
+                            for (let i = 2; i <= value; i++) {
+                                result *= i;
+                            }
+                            break;
+                        default:
+                            result = value;
+                    }
+                    
+                    currentInput = result.toString();
+                    updateDisplay();
+                } catch {
+                    currentInput = 'Error';
+                    updateDisplay();
+                    setTimeout(() => {
+                        currentInput = '0';
+                        updateDisplay();
+                    }, 1000);
+                }
+            }
+        }
+        
+        function calculate() {
+            try {
+                // Replace visual representations with JavaScript equivalents
+                let expression = currentInput
+                    .replace(/×/g, '*')
+                    .replace(/−/g, '-');
+                
+                const result = eval(expression);
+                currentInput = result.toString();
+                updateDisplay();
+            } catch {
+                currentInput = 'Error';
+                updateDisplay();
+                setTimeout(() => {
+                    currentInput = '0';
+                    updateDisplay();
+                }, 1000);
+            }
+        }
+        
+        function toggleAngleMode() {
+            degreeMode = !degreeMode;
+            const modeBtn = document.querySelector('.angle-mode');
+            modeBtn.textContent = degreeMode ? 'DEG' : 'RAD';
+            modeBtn.style.color = degreeMode ? '#00ff00' : '#ff00ff';
+        }
+        
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+</html>
